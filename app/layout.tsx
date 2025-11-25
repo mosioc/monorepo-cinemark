@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { Cinzel, Inter } from "next/font/google";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -11,6 +12,9 @@ const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
 });
+
+const cinzel = Cinzel({ subsets: ["latin"], variable: "--font-cinzel" });
+const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
 export const metadata: Metadata = {
   title: "Create Next App",
