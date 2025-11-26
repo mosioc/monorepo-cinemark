@@ -1,3 +1,4 @@
+CREATE TYPE "public"."purchase_status" AS ENUM('PENDING', 'COMPLETED', 'REFUNDED');--> statement-breakpoint
 CREATE TYPE "public"."role" AS ENUM('USER', 'ADMIN');--> statement-breakpoint
 CREATE TYPE "public"."status" AS ENUM('PENDING', 'APPROVED', 'REJECTED');--> statement-breakpoint
 CREATE TABLE "movies" (
@@ -5,24 +6,24 @@ CREATE TABLE "movies" (
 	"title" varchar(255) NOT NULL,
 	"director" varchar(255) NOT NULL,
 	"genre" text NOT NULL,
-	"rating" integer NOT NULL,
+	"rating" numeric(3, 1) NOT NULL,
 	"description" text NOT NULL,
 	"cover_color" varchar(7) NOT NULL,
 	"cover_url" text NOT NULL,
 	"video_url" text NOT NULL,
 	"summary" varchar NOT NULL,
-	"is_purchased" boolean DEFAULT false,
-	"created_at" timestamp with time zone DEFAULT now(),
-	CONSTRAINT "movies_id_unique" UNIQUE("id")
+	"created_at" timestamp with time zone DEFAULT now()
 );
 --> statement-breakpoint
 CREATE TABLE "purchases" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"user_id" uuid NOT NULL,
 	"movie_id" uuid NOT NULL,
+	"price" numeric(10, 2) NOT NULL,
+	"currency" varchar(10) DEFAULT 'USD',
+	"purchase_status" "purchase_status" DEFAULT 'COMPLETED',
 	"purchase_date" timestamp with time zone DEFAULT now() NOT NULL,
-	"created_at" timestamp with time zone DEFAULT now(),
-	CONSTRAINT "purchases_id_unique" UNIQUE("id")
+	"created_at" timestamp with time zone DEFAULT now()
 );
 --> statement-breakpoint
 CREATE TABLE "users" (
@@ -32,11 +33,13 @@ CREATE TABLE "users" (
 	"password" text NOT NULL,
 	"status" "status" DEFAULT 'PENDING',
 	"role" "role" DEFAULT 'USER',
-	"last_activity_date" date DEFAULT now(),
-	"created_at" timestamp with time zone DEFAULT now(),
-	CONSTRAINT "users_id_unique" UNIQUE("id"),
-	CONSTRAINT "users_email_unique" UNIQUE("email")
+	"last_activity_date" timestamp with time zone DEFAULT now(),
+	"created_at" timestamp with time zone DEFAULT now()
 );
 --> statement-breakpoint
 ALTER TABLE "purchases" ADD CONSTRAINT "purchases_user_id_users_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."users"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
-ALTER TABLE "purchases" ADD CONSTRAINT "purchases_movie_id_movies_id_fk" FOREIGN KEY ("movie_id") REFERENCES "public"."movies"("id") ON DELETE no action ON UPDATE no action;
+ALTER TABLE "purchases" ADD CONSTRAINT "purchases_movie_id_movies_id_fk" FOREIGN KEY ("movie_id") REFERENCES "public"."movies"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
+CREATE UNIQUE INDEX "purchases_user_movie_unique" ON "purchases" USING btree ("user_id","movie_id");--> statement-breakpoint
+CREATE INDEX "purchases_user_idx" ON "purchases" USING btree ("user_id");--> statement-breakpoint
+CREATE INDEX "purchases_movie_idx" ON "purchases" USING btree ("movie_id");--> statement-breakpoint
+CREATE UNIQUE INDEX "users_email_unique" ON "users" USING btree ("email");
