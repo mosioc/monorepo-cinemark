@@ -1,6 +1,6 @@
 // Typescript declration file
 
-interface Movie {
+declare interface Movie {
   id: string;
   title: string;
   director: string;
@@ -11,6 +11,7 @@ interface Movie {
   coverUrl: string;
   videoUrl: string;
   summary: string;
+  isPurchased: boolean;
   createdAt: Date | null;
 }
 
