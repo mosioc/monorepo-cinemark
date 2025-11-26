@@ -266,15 +266,15 @@
 
   /* Layout */
   .auth-container {
-    @apply relative flex flex-col-reverse text-light-100 sm:flex-row;
+    @apply relative flex flex-col-reverse w-full text-light-100 sm:flex-row;
   }
 
   .auth-form {
-    @apply my-auto flex h-full min-h-screen flex-1 items-center bg-dark-100 px-5 py-10;
+    @apply my-auto flex h-full w-full min-h-screen flex-1 items-center bg-dark-100 px-5 py-10;
   }
 
   .auth-box {
-    @apply mx-auto flex max-w-xl flex-col gap-6 rounded-lg p-10;
+    @apply mx-auto w-full flex flex-col gap-6 rounded-lg p-10;
     background: linear-gradient(180deg, #12141d 0%, #12151f 100%);
   }
 
