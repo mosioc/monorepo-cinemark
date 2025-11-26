@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   description: "For cine-philes, by cine-philes.",
 };
 
-const RootLayout = async ({ children }: { children: ReactNode }) => {
+export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
       <body className={`${cinzel.variable} ${inter.variable} antialiased`}>
@@ -19,6 +19,4 @@ const RootLayout = async ({ children }: { children: ReactNode }) => {
       </body>
     </html>
   );
-};
-
-export default RootLayout;
+}
