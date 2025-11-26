@@ -27,7 +27,7 @@ const MovieCard = ({
 
       {isPurchased && (
         <div className="mt-3 w-full">
-          <div className="book-loaned">
+          <div className="purchased-movie">
             <Image
               src="/icons/calendar.svg"
               alt="calendar"
@@ -38,7 +38,7 @@ const MovieCard = ({
             <p className="text-light-100">11 days left to return</p>
           </div>
 
-          <Button className="book-btn">Download receipt</Button>
+          <Button className="movie-btn">Download receipt</Button>
         </div>
       )}
     </Link>
