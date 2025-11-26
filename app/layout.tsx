@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { ReactNode } from "react";
 import { Cinzel, Inter } from "next/font/google";
-// import "./globals.css";
+import "./globals.css";
 
 const cinzel = Cinzel({ subsets: ["latin"], variable: "--font-cinzel" });
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
