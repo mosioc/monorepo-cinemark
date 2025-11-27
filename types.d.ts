@@ -24,3 +24,15 @@ interface AuthCredentials {
   email: string;
   password: string;
 }
+
+interface MovieParams {
+  title: string;
+  director: string;
+  genre: string;
+  rating: number;
+  coverUrl: string;
+  coverColor: string;
+  description: string;
+  videoUrl: string;
+  summary: string;
+}
