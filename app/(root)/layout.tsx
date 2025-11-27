@@ -15,16 +15,18 @@ const Layout = async ({ children }: { children: ReactNode }) => {
   after(async () => {
     if (!session?.user?.id) return;
 
-    const user = await db
+    const [user] = await db
       .select()
       .from(users)
-      .where(eq(users.id, session?.user?.id))
+      .where(eq(users.id, session.user.id))
       .limit(1);
+
+    if (!user) return;
 
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 
-    const lastActivity = user[0].lastActivityDate;
+    const lastActivity = user.lastActivityDate;
     const isSameDay =
       lastActivity &&
       lastActivity.getFullYear() === today.getFullYear() &&
