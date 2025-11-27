@@ -11,11 +11,16 @@ declare interface Movie {
   coverUrl: string;
   videoUrl: string;
   summary: string;
-  isPurchased: boolean;
   createdAt: Date | null;
 }
 
 declare module "*.css" {
   const content: Record<string, string>;
   export default content;
+}
+
+interface AuthCredentials {
+  fullName: string;
+  email: string;
+  password: string;
 }

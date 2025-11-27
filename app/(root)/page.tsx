@@ -4,7 +4,7 @@ import MovieHero from "@/components/MovieHero";
 const Home = async () => {
   return (
     <>
-      <MovieHero />
+      {/* <MovieHero /> */}
 
       {/* <MoveList
         title="Latest Books"
