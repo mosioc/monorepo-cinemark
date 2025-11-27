@@ -15,7 +15,6 @@ const Home = async () => {
 
   const latestMovies: Movie[] = latestMoviesRaw.map((movie) => ({
     ...movie,
-    rating: parseFloat(movie.rating),
   }));
 
   if (latestMovies.length === 0) {
@@ -23,9 +22,7 @@ const Home = async () => {
       <div className="flex items-center justify-center min-h-[60vh]">
         <div className="text-center">
           <h2 className="text-2xl font-bold mb-2">No movies available</h2>
-          <p className="text-muted-foreground">
-            Check back later for movies!
-          </p>
+          <p className="text-muted-foreground">Check back later for movies!</p>
         </div>
       </div>
     );
