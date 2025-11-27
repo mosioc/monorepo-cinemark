@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
-import { movieSchema } from "@/lib/validations";
+import { createMovieSchema } from "@/lib/validations";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { createMovie } from "@/lib/admin/actions/movie";
@@ -27,8 +27,8 @@ interface Props {
 const MovieForm = ({ type, ...movie }: Props) => {
   const router = useRouter();
 
-  const form = useForm<z.infer<typeof movieSchema>>({
-    resolver: zodResolver(movieSchema),
+  const form = useForm<z.infer<typeof createMovieSchema>>({
+    resolver: zodResolver(createMovieSchema),
     defaultValues: {
       title: movie.title || "",
       description: movie.description || "",
@@ -36,13 +36,13 @@ const MovieForm = ({ type, ...movie }: Props) => {
       genre: movie.genre || "",
       rating: movie.rating ? Number(movie.rating) : 1,
       coverUrl: movie.coverUrl || "",
-      coverColor: movie.coverColor || "",
+      coverColor: movie.coverColor || "#000000", // Add default hex color
       videoUrl: movie.videoUrl || "",
       summary: movie.summary || "",
     },
   });
 
-  const onSubmit = async (values: z.infer<typeof movieSchema>) => {
+  const onSubmit = async (values: z.infer<typeof createMovieSchema>) => {
     const result = await createMovie(values);
 
     if (result.success) {
@@ -76,6 +76,72 @@ const MovieForm = ({ type, ...movie }: Props) => {
             </FormItem>
           )}
         />
+        <FormField
+          control={form.control}
+          name={"coverUrl"}
+          render={({ field }) => (
+            <FormItem className="flex flex-col gap-1">
+              <FormLabel className="text-base font-normal text-dark-500">
+                Cover Image URL
+              </FormLabel>
+              <FormControl>
+                <Input
+                  required
+                  type="url"
+                  placeholder="https://placehold.co/400x600.png"
+                  {...field}
+                  className="movie-form_input"
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name={"coverColor"}
+          render={({ field }) => (
+            <FormItem className="flex flex-col gap-1">
+              <FormLabel className="text-base font-normal text-dark-500">
+                Cover Color (Hex)
+              </FormLabel>
+              <FormControl>
+                <Input
+                  required
+                  type="text"
+                  placeholder="#FF5733"
+                  {...field}
+                  className="movie-form_input"
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name={"videoUrl"}
+          render={({ field }) => (
+            <FormItem className="flex flex-col gap-1">
+              <FormLabel className="text-base font-normal text-dark-500">
+                Video URL
+              </FormLabel>
+              <FormControl>
+                <Input
+                  required
+                  type="url"
+                  placeholder="https://example.com/video.mp4"
+                  {...field}
+                  className="movie-form_input"
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
         <FormField
           control={form.control}
           name={"director"}
