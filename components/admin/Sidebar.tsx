@@ -6,7 +6,7 @@ import Link from "next/link";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { usePathname } from "next/navigation";
-// import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Session } from "next-auth";
 
 const Sidebar = ({ session }: { session: Session }) => {
@@ -75,11 +75,11 @@ const Sidebar = ({ session }: { session: Session }) => {
       </div>
 
       <div className="user">
-        {/* <Avatar>
+        <Avatar>
           <AvatarFallback className="bg-amber-100">
             {getInitials(session?.user?.name || "IN")}
           </AvatarFallback>
-        </Avatar> */}
+        </Avatar>
 
         <div className="flex flex-col max-md:hidden">
           <p className="font-semibold text-dark-200">{session?.user?.name}</p>
