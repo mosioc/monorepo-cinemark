@@ -7,8 +7,8 @@ export const navigationLinks = [
   {
     img: "/icons/user.svg",
     selectedImg: "/icons/user-fill.svg",
-    href: "/my-profile",
-    label: "My Profile",
+    href: "/profile",
+    label: "Profile",
   },
 ];
 
@@ -21,7 +21,7 @@ export const adminSideBarLinks = [
   {
     img: "/icons/admin/users.svg",
     route: "/admin/users",
-    text: "All Viewers",
+    text: "All Users",
   },
   {
     img: "/icons/admin/movie.svg",

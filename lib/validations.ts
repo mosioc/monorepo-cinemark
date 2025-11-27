@@ -32,3 +32,9 @@ export const movieSchema = z.object({
       message: "Invalid date",
     }),
 });
+
+export const createMovieSchema = movieSchema.omit({
+  id: true,
+  isPurchased: true,
+  createdAt: true,
+});

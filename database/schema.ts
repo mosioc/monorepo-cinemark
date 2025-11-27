@@ -18,6 +18,7 @@ export const STATUS_ENUM = pgEnum("status", [
 ]);
 
 export const ROLE_ENUM = pgEnum("role", ["USER", "ADMIN"]);
+
 export const PURCHASE_STATUS_ENUM = pgEnum("purchase_status", [
   "PENDING",
   "COMPLETED",
