@@ -55,10 +55,10 @@ const seed = async () => {
         "/movies/videos"
       );
 
-      const { id,  ...movieData } = movie;
+      const { id, source, ...movieData } = movie;
 
       await db.insert(movies).values({
-        id: randomUUID(), 
+        id: randomUUID(),
         ...movieData,
         coverUrl: coverUrl!,
         videoUrl: videoUrl!,
@@ -70,7 +70,7 @@ const seed = async () => {
     console.log("🎉 All data seeded successfully!");
   } catch (error) {
     console.error("❌ Error seeding data:", error);
-    process.exit(1); 
+    process.exit(1);
   }
 };
 
