@@ -18,7 +18,7 @@ const Page = () => {
         <Button>Logout</Button>
       </form>
 
-      {/* <MovieList title="Purchased movies" movies={sampleMovies} /> */}
+      <MovieList title="Borrowed Books" movies={sampleMovies} />
     </>
   );
 };

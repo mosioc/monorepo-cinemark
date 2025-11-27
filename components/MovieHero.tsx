@@ -47,10 +47,14 @@ const MovieHero = async ({
           </div>
         </div>
 
-        
         <p className="movie-description">{description}</p>
 
-        {user && <MovieBuy movieId={id} userId={userId} />}
+        {user && (
+          <MovieBuy
+            movieId={id}
+            userId={userId}
+          />
+        )}
       </div>
 
       <div className="relative flex flex-1 justify-center">
