@@ -7,7 +7,6 @@ import { desc } from "drizzle-orm";
 
 const Home = async () => {
   const session = await auth();
-
   const latestMoviesRaw = await db
     .select()
     .from(movies)
@@ -18,6 +17,19 @@ const Home = async () => {
     ...movie,
     rating: parseFloat(movie.rating),
   }));
+
+  if (latestMovies.length === 0) {
+    return (
+      <div className="flex items-center justify-center min-h-[60vh]">
+        <div className="text-center">
+          <h2 className="text-2xl font-bold mb-2">No movies available</h2>
+          <p className="text-muted-foreground">
+            Check back later for movies!
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <>
