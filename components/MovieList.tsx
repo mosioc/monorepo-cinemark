@@ -7,22 +7,18 @@ interface Props {
   containerClassName?: string;
 }
 
-const MovieList = ({ 
-  // title,
-  // movies,
-  // containerClassName 
-}: Props) => {
-  // if (movies.length < 2) return;
+const MovieList = ({ title, movies, containerClassName }: Props) => {
+  if (movies.length < 2) return;
 
   return (
-    <section className={ /* containerClassName */ "test"}>
-      {/* <h2 className="font-bebas-neue text-4xl text-light-100">{title}</h2>
+    <section className={containerClassName}>
+      <h2 className="font-bebas-neue text-4xl text-light-100">{title}</h2>
 
       <ul className="movie-list">
         {movies.map((movie) => (
           <MovieCard key={movie.title} {...movie} />
         ))}
-      </ul> */}
+      </ul>
     </section>
   );
 };

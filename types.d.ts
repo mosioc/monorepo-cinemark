@@ -5,7 +5,7 @@ declare interface Movie {
   title: string;
   director: string;
   genre: string;
-  rating: number;
+  rating: string;
   description: string;
   coverColor: string;
   coverUrl: string;
