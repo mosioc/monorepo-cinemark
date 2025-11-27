@@ -387,7 +387,6 @@
 
     &:focus {
       outline: none;
-      ring: 0;
       border-width: 0;
     }
   }
