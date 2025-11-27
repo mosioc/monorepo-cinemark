@@ -51,7 +51,14 @@ export const signUp = async (params: AuthCredentials) => {
       password: hashedPassword,
     });
 
-    await signInWithCredentials({ email, password });
+    const signInResult = await signInWithCredentials({ email, password });
+
+    if (!signInResult.success) {
+      return {
+        success: false,
+        error: "Account created but sign-in failed.",
+      };
+    }
 
     return { success: true };
   } catch (error) {
