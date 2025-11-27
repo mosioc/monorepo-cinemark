@@ -11,5 +11,13 @@ const {
 const imagekit = new ImageKit({ publicKey, privateKey, urlEndpoint });
 
 export async function GET() {
-  return NextResponse.json(imagekit.getAuthenticationParameters());
+  try {
+    return NextResponse.json(imagekit.getAuthenticationParameters());
+  } catch (error) {
+    console.error("ImageKit authentication error:", error);
+    return NextResponse.json(
+      { error: "Failed to generate authentication parameters" },
+      { status: 500 }
+    );
+  }
 }
