@@ -23,7 +23,6 @@ export const movieSchema = z.object({
     .trim()
     .regex(/^#[0-9A-F]{6}$/i),
   coverUrl: z.string().url(),
-  videoUrl: z.string().url(),
   summary: z.string().trim().min(10),
   isPurchased: z.boolean(),
   createdAt: z

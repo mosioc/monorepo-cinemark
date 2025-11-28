@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-// import { toast } from "@/hooks/use-toast";
+import { purchaseMovie } from "@/lib/actions/movie";
 
 interface Props {
   userId: string;
@@ -13,50 +13,49 @@ interface Props {
 
 const MovieBuy = ({ userId, movieId }: Props) => {
   const router = useRouter();
-  const [buying, setBuying] = useState(false);
+  const [adding, setAdding] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState(false);
 
-  const handleBuyMovie = async () => {
-    setBuying(true);
+  const handleAddToLibrary = async () => {
+    setAdding(true);
+    setError(null);
+    setSuccess(false);
 
-    // try {
-    //   const result = await buyMovie({ movieId, userId });
+    try {
+      const result = await purchaseMovie({ movieId, userId });
 
-    //   if (result.success) {
-    //     toast({
-    //       title: "Success",
-    //       description: "Movie purchased.",
-    //     });
-
-    //     router.push("/");
-    //   } else {
-    //     toast({
-    //       title: "Error",
-    //       description: result.error,
-    //       variant: "destructive",
-    //     });
-    //   }
-    // } catch (error) {
-    //   toast({
-    //     title: "Error",
-    //     description: "An error occurred while purchasing the movie",
-    //     variant: "destructive",
-    //   });
-    // } finally {
-    //   setBuying(false);
-    // }
+      if (result.success) {
+        setSuccess(true);
+        setTimeout(() => {
+          router.refresh();
+        }, 1500);
+      } else {
+        setError(result.error || "Failed to add movie to library");
+      }
+    } catch (error) {
+      setError("An error occurred while adding the movie");
+    } finally {
+      setAdding(false);
+    }
   };
 
   return (
-    <Button
-      className="movie-overview_btn"
-      onClick={handleBuyMovie}
-      disabled={buying}
-    >
-      <Image src="/icons/movie.svg" alt="movie" width={20} height={20} />
-      <p className="font-bebas-neue text-xl text-dark-100">
-        {buying ? "Buying ..." : "Buy Movie"}
-      </p>
-    </Button>
+    <div>
+      <Button
+        className="movie-overview_btn"
+        onClick={handleAddToLibrary}
+        disabled={adding || success}
+      >
+        <Image src="/icons/movie.svg" alt="add to library" width={20} height={20} />
+        <p className="font-bebas-neue text-xl text-dark-100">
+          {adding ? "Adding ..." : success ? "Added to Library!" : "Add Movie to My Library"}
+        </p>
+      </Button>
+      {error && <p className="text-red-500 mt-2">{error}</p>}
+      {success && <p className="text-green-500 mt-2">Movie added successfully!</p>}
+    </div>
   );
 };
+
 export default MovieBuy;

@@ -8,7 +8,6 @@
     "description": "Set during World War II, an American expatriate (Rick) must choose between his love for Ilsa and helping her husband escape to continue his fight against the Nazis.",
     "coverColor": "#1c1f40",
     "coverUrl": "https://m.media-amazon.com/images/M/MV5BNWEzN2U1YTYtYTQyMS00NTVkLWE2NGQtZWFlMmM0MDNjMmRiXkEyXkFqcGc@._V1_FMjpg_UX500_.jpg",
-    "videoUrl": "/sample-trailer.mp4?updatedAt=1722593504152",
     "summary": "Classic 1942 romantic drama about love, sacrifice and duty in wartime Casablanca.",
     "source": {
       "imdb": "https://www.imdb.com/title/tt0034583/",
@@ -24,7 +23,6 @@
     "description": "A hacker (Neo) discovers the reality he knows is a simulation called the Matrix and joins rebels fighting its controllers.",
     "coverColor": "#fffdf6",
     "coverUrl": "https://m.media-amazon.com/images/M/MV5BN2NmN2VhMTQtMDNiOS00NDlhLTliMjgtODE2ZTY0ODQyNDRhXkEyXkFqcGc@._V1_FMjpg_UY3156_.jpg",
-    "videoUrl": "/sample-trailer.mp4?updatedAt=1722593504152",
     "summary": "1999 sci-fi/action landmark about reality, control and a rebellion against a simulated world.",
     "source": {
       "imdb": "https://www.imdb.com/title/tt0133093/",
@@ -40,7 +38,6 @@
     "description": "As Earth becomes uninhabitable, a former pilot leads an expedition through a wormhole to find a new home for humanity.",
     "coverColor": "#f8e036",
     "coverUrl": "https://m.media-amazon.com/images/M/MV5BYzdjMDAxZGItMjI2My00ODA1LTlkNzItOWFjMDU5ZDJlYWY3XkEyXkFqcGc@._V1_FMjpg_UY3600_.jpg",
-    "videoUrl": "/sample-trailer.mp4?updatedAt=1722593504152",
     "summary": "Christopher Nolan's 2014 epic about family, time, gravity and humanity's survival.",
     "source": {
       "imdb": "https://www.imdb.com/title/tt0816692/",
@@ -56,7 +53,6 @@
     "description": "In a dystopian Los Angeles, a blade runner is tasked with hunting down rogue replicants—bioengineered humans.",
     "coverColor": "#ed6322",
     "coverUrl": "https://m.media-amazon.com/images/M/MV5BOWQ4YTBmNTQtMDYxMC00NGFjLTkwOGQtNzdhNmY1Nzc1MzUxXkEyXkFqcGc@._V1_FMjpg_UY4250_.jpg",
-    "videoUrl": "/sample-trailer.mp4?updatedAt=1722593504152",
     "summary": "Ridley Scott's 1982 sci-fi noir exploring identity, memory and what it means to be human.",
     "source": {
       "imdb": "https://www.imdb.com/title/tt0083658/",
@@ -72,8 +68,7 @@
     "description": "The aging patriarch of an organized crime dynasty transfers control of his clandestine empire to his reluctant son.",
     "coverColor": "#000000",
     "coverUrl": "https://m.media-amazon.com/images/M/MV5BNGEwYjgwOGQtYjg5ZS00Njc1LTk2ZGEtM2QwZWQ2NjdhZTE5XkEyXkFqcGc@._V1_FMjpg_UY1982_.jpg",
-    "videoUrl": "/sample-trailer.mp4?updatedAt=1722593504152",
-    "summary": "An epic tale of power, family, and betrayal — the Corleone crime family’s legacy is passed on to Michael Corleone, who is torn between the life he wants and the destiny thrust upon him.",
+    "summary": "An epic tale of power, family, and betrayal — the Corleone crime family's legacy is passed on to Michael Corleone, who is torn between the life he wants and the destiny thrust upon him.",
     "source": {
       "imdb": "https://www.imdb.com/title/tt0068646/",
       "wiki": "https://en.wikipedia.org/wiki/The_Godfather"
