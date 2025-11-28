@@ -37,7 +37,6 @@ const MovieForm = ({ type, ...movie }: Props) => {
       rating: movie.rating ? Number(movie.rating) : 1,
       coverUrl: movie.coverUrl || "",
       coverColor: movie.coverColor || "#000000", // Add default hex color
-      videoUrl: movie.videoUrl || "",
       summary: movie.summary || "",
     },
   });
@@ -47,7 +46,7 @@ const MovieForm = ({ type, ...movie }: Props) => {
 
     if (result.success) {
       alert("Movie created successfully");
-      router.push(`/admin/movies/${result.data.id}`);
+      router.push(`/admin/movies`);
     } else {
       alert(`Error: ${result.message}`);
     }
@@ -111,28 +110,6 @@ const MovieForm = ({ type, ...movie }: Props) => {
                   required
                   type="text"
                   placeholder="#FF5733"
-                  {...field}
-                  className="movie-form_input"
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name={"videoUrl"}
-          render={({ field }) => (
-            <FormItem className="flex flex-col gap-1">
-              <FormLabel className="text-base font-normal text-dark-500">
-                Video URL
-              </FormLabel>
-              <FormControl>
-                <Input
-                  required
-                  type="url"
-                  placeholder="https://example.com/video.mp4"
                   {...field}
                   className="movie-form_input"
                 />
