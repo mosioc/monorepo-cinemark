@@ -2,7 +2,7 @@
 
 import { db } from "@/database/drizzle";
 import { movies, purchases } from "@/database/schema";
-import { eq } from "drizzle-orm";
+import { eq, and } from "drizzle-orm";
 
 interface PurchaseMovieParams {
   userId: string;
@@ -29,8 +29,7 @@ export const purchaseMovie = async (params: PurchaseMovieParams) => {
     const existingPurchase = await db
       .select()
       .from(purchases)
-      .where(eq(purchases.userId, userId))
-      .where(eq(purchases.movieId, movieId))
+      .where(and(eq(purchases.userId, userId), eq(purchases.movieId, movieId)))
       .limit(1);
 
     if (existingPurchase.length > 0) {
