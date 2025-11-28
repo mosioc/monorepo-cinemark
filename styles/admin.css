@@ -194,7 +194,7 @@
     font-weight: 500;
     font-size: 1rem;
     line-height: 1.5rem;
-    color: var(--color-light-500);
+    color: var(--color-dark-400);
     white-space: nowrap;
   }
 
@@ -233,7 +233,7 @@
       gap: 0.5rem;
 
       & p:first-child {
-        color: var(--color-light-500);
+        color: var(--color-dark-400);
         font-size: 0.875rem;
         line-height: 1.25rem;
         overflow: hidden;
@@ -246,11 +246,11 @@
         width: 0.25rem;
         height: 0.25rem;
         border-radius: 9999px;
-        background-color: var(--color-light-500);
+        background-color: var(--color-dark-400);
       }
 
       & p:last-child {
-        color: var(--color-light-500);
+        color: var(--color-dark-400);
         font-size: 0.875rem;
         line-height: 1.25rem;
       }
