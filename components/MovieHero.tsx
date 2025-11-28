@@ -9,6 +9,7 @@ import { eq } from "drizzle-orm";
 interface Props extends Movie {
   userId: string;
 }
+
 const MovieHero = async ({
   title,
   director,
@@ -49,12 +50,7 @@ const MovieHero = async ({
 
         <p className="movie-description">{description}</p>
 
-        {user && (
-          <MovieBuy
-            movieId={id}
-            userId={userId}
-          />
-        )}
+        {user && <MovieBuy movieId={id} userId={userId} />}
       </div>
 
       <div className="relative flex flex-1 justify-center">

@@ -2,16 +2,15 @@
 
 import { db } from "@/database/drizzle";
 import { movies, purchases } from "@/database/schema";
-import { eq, and } from "drizzle-orm";
+import { eq } from "drizzle-orm";
 
 interface PurchaseMovieParams {
   userId: string;
   movieId: string;
-  price: string;
 }
 
 export const purchaseMovie = async (params: PurchaseMovieParams) => {
-  const { userId, movieId, price } = params;
+  const { userId, movieId } = params;
 
   try {
     const movie = await db
@@ -37,14 +36,14 @@ export const purchaseMovie = async (params: PurchaseMovieParams) => {
     if (existingPurchase.length > 0) {
       return {
         success: false,
-        error: "You have already purchased this movie",
+        error: "You have already added this movie to your library",
       };
     }
 
     const record = await db.insert(purchases).values({
       userId,
       movieId,
-      price,
+      price: "0",
       currency: "USD",
       purchaseStatus: "COMPLETED",
     });
@@ -58,7 +57,7 @@ export const purchaseMovie = async (params: PurchaseMovieParams) => {
 
     return {
       success: false,
-      error: "An error occurred while purchasing the movie",
+      error: "An error occurred while adding the movie to your library",
     };
   }
 };

@@ -9,31 +9,34 @@ import { purchaseMovie } from "@/lib/actions/movie";
 interface Props {
   userId: string;
   movieId: string;
-  price: string;
 }
 
-const MovieBuy = ({ userId, movieId, price }: Props) => {
+const MovieBuy = ({ userId, movieId }: Props) => {
   const router = useRouter();
-  const [purchasing, setPurchasing] = useState(false);
+  const [adding, setAdding] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState(false);
 
-  const handlePurchaseMovie = async () => {
-    setPurchasing(true);
+  const handleAddToLibrary = async () => {
+    setAdding(true);
     setError(null);
+    setSuccess(false);
 
     try {
-      const result = await purchaseMovie({ movieId, userId, price });
+      const result = await purchaseMovie({ movieId, userId });
 
       if (result.success) {
-        alert("Movie purchased successfully!");
-        router.push("/");
+        setSuccess(true);
+        setTimeout(() => {
+          router.refresh();
+        }, 1500);
       } else {
-        setError(result.error || "Failed to purchase movie");
+        setError(result.error || "Failed to add movie to library");
       }
     } catch (error) {
-      setError("An error occurred while purchasing the movie");
+      setError("An error occurred while adding the movie");
     } finally {
-      setPurchasing(false);
+      setAdding(false);
     }
   };
 
@@ -41,15 +44,16 @@ const MovieBuy = ({ userId, movieId, price }: Props) => {
     <div>
       <Button
         className="movie-overview_btn"
-        onClick={handlePurchaseMovie}
-        disabled={purchasing}
+        onClick={handleAddToLibrary}
+        disabled={adding || success}
       >
-        <Image src="/icons/movie.svg" alt="purchase" width={20} height={20} />
+        <Image src="/icons/movie.svg" alt="add to library" width={20} height={20} />
         <p className="font-bebas-neue text-xl text-dark-100">
-          {purchasing ? "Purchasing ..." : "Purchase Movie"}
+          {adding ? "Adding ..." : success ? "Added to Library!" : "Add Movie to My Library"}
         </p>
       </Button>
       {error && <p className="text-red-500 mt-2">{error}</p>}
+      {success && <p className="text-green-500 mt-2">Movie added successfully!</p>}
     </div>
   );
 };
