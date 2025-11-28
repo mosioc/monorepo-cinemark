@@ -20,7 +20,7 @@ const Header = () => {
             }}
             className="mb-10"
           >
-            <Button>Logout</Button>
+            <Button className="bg-primary-admin text-light-600">Logout</Button>
           </form>
         </li>
       </ul>

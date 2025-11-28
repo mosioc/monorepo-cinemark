@@ -225,7 +225,7 @@
       -webkit-line-clamp: 1;
     }
 
-    & .author {
+    & .director {
       display: flex;
       flex-wrap: wrap;
       flex-direction: row;

@@ -110,7 +110,7 @@ const Page = async () => {
                 <div key={movie.id} className="movie-stripe">
                   <div className="flex-1">
                     <p className="title">{movie.title}</p>
-                    <div className="author">
+                    <div className="director">
                       <p>{formatDate(movie.createdAt)}</p>
                     </div>
                   </div>
@@ -138,7 +138,7 @@ const Page = async () => {
                 <div key={user.id} className="movie-stripe">
                   <div className="flex-1">
                     <p className="title">{user.fullName}</p>
-                    <div className="author">
+                    <div className="director">
                       <p>{user.email}</p>
                       <div></div>
                       <p>{formatDate(user.createdAt)}</p>
