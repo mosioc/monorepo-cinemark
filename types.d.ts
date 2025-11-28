@@ -9,7 +9,6 @@ declare interface Movie {
   description: string;
   coverColor: string;
   coverUrl: string;
-  videoUrl: string;
   summary: string;
   createdAt: Date | null;
 }
@@ -33,6 +32,5 @@ interface MovieParams {
   coverUrl: string;
   coverColor: string;
   description: string;
-  videoUrl: string;
   summary: string;
 }

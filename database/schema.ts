@@ -55,7 +55,6 @@ export const movies = pgTable("movies", {
   description: text("description").notNull(),
   coverColor: varchar("cover_color", { length: 7 }).notNull(),
   coverUrl: text("cover_url").notNull(),
-  videoUrl: text("video_url").notNull(),
   summary: varchar("summary").notNull(),
   createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
 });

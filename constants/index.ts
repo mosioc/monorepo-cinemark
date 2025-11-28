@@ -68,7 +68,6 @@ export const sampleMovies = [
     // IMDb/Amazon hosted poster image (IMDb uses m.media-amazon.com)
     coverUrl:
       "https://m.media-amazon.com/images/M/MV5BNWEzN2U1YTYtYTQyMS00NTVkLWE2NGQtZWFlMmM0MDNjMmRiXkEyXkFqcGc@._V1_FMjpg_UX500_.jpg",
-    videoUrl: "/sample-trailer.mp4?updatedAt=1722593504152",
     summary:
       "Classic 1942 romantic drama about love, sacrifice and duty in wartime Casablanca.",
     source: {
@@ -88,7 +87,6 @@ export const sampleMovies = [
     coverColor: "#fffdf6",
     coverUrl:
       "https://m.media-amazon.com/images/M/MV5BN2NmN2VhMTQtMDNiOS00NDlhLTliMjgtODE2ZTY0ODQyNDRhXkEyXkFqcGc@._V1_FMjpg_UY3156_.jpg",
-    videoUrl: "/sample-trailer.mp4?updatedAt=1722593504152",
     summary:
       "1999 sci-fi/action landmark about reality, control and a rebellion against a simulated world.",
     source: {
@@ -108,7 +106,6 @@ export const sampleMovies = [
     coverColor: "#f8e036",
     coverUrl:
       "https://m.media-amazon.com/images/M/MV5BYzdjMDAxZGItMjI2My00ODA1LTlkNzItOWFjMDU5ZDJlYWY3XkEyXkFqcGc@._V1_FMjpg_UY3600_.jpg",
-    videoUrl: "/sample-trailer.mp4?updatedAt=1722593504152",
     summary:
       "Christopher Nolan's 2014 epic about family, time, gravity and humanity's survival.",
     source: {
@@ -128,7 +125,6 @@ export const sampleMovies = [
     coverColor: "#ed6322",
     coverUrl:
       "https://m.media-amazon.com/images/M/MV5BOWQ4YTBmNTQtMDYxMC00NGFjLTkwOGQtNzdhNmY1Nzc1MzUxXkEyXkFqcGc@._V1_FMjpg_UY4250_.jpg",
-    videoUrl: "/sample-trailer.mp4?updatedAt=1722593504152",
     summary:
       "Ridley Scott's 1982 sci-fi noir exploring identity, memory and what it means to be human.",
     source: {
@@ -148,7 +144,6 @@ export const sampleMovies = [
     coverColor: "#000000",
     coverUrl:
       "https://m.media-amazon.com/images/M/MV5BNGEwYjgwOGQtYjg5ZS00Njc1LTk2ZGEtM2QwZWQ2NjdhZTE5XkEyXkFqcGc@._V1_FMjpg_UY1982_.jpg",
-    videoUrl: "/sample-trailer.mp4?updatedAt=1722593504152",
     summary:
       "An epic tale of power, family, and betrayal — the Corleone crime family’s legacy is passed on to Michael Corleone, who is torn between the life he wants and the destiny thrust upon him.",
     source: {
