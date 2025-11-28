@@ -194,8 +194,12 @@
   }
 
   body {
-    @apply bg-background text-foreground antialiased;
+    @apply bg-background text-foreground antialiased w-full overflow-x-hidden;
     font-feature-settings: "kern" 1, "liga" 1, "calt" 1;
+  }
+
+  html {
+    @apply w-full overflow-x-hidden;
   }
 
   h1,
@@ -283,7 +287,7 @@
   }
 
   .root-container {
-    @apply flex min-h-screen flex-1 flex-col bg-dark-100 px-5 xs:px-10 md:px-16;
+    @apply flex min-h-screen flex-1 flex-col bg-dark-100 px-5 xs:px-10 md:px-16 w-full overflow-x-hidden;
   }
 
   .movie-details {
