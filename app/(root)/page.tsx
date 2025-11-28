@@ -10,7 +10,6 @@ const Home = async () => {
   const latestMoviesRaw = await db
     .select()
     .from(movies)
-    .limit(10)
     .orderBy(desc(movies.createdAt));
 
   const latestMovies: Movie[] = latestMoviesRaw.map((movie) => ({
