@@ -3,7 +3,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-
 import {
   Form,
   FormControl,
@@ -24,20 +23,20 @@ interface Props {
   movie?: Partial<Movie>;
 }
 
-const MovieForm = ({ type, ...movie }: Props) => {
+const MovieForm = ({ type = "create", movie }: Props) => {
   const router = useRouter();
 
   const form = useForm<z.infer<typeof createMovieSchema>>({
     resolver: zodResolver(createMovieSchema),
     defaultValues: {
-      title: movie.title || "",
-      description: movie.description || "",
-      director: movie.director || "",
-      genre: movie.genre || "",
-      rating: movie.rating ? Number(movie.rating) : 1,
-      coverUrl: movie.coverUrl || "",
-      coverColor: movie.coverColor || "#000000", // Add default hex color
-      summary: movie.summary || "",
+      title: movie?.title || "",
+      description: movie?.description || "",
+      director: movie?.director || "",
+      genre: movie?.genre || "",
+      rating: movie?.rating ? Number(movie.rating) : 1,
+      coverUrl: movie?.coverUrl || "",
+      coverColor: movie?.coverColor || "#000000",
+      summary: movie?.summary || "",
     },
   });
 
@@ -228,10 +227,11 @@ const MovieForm = ({ type, ...movie }: Props) => {
         />
 
         <Button type="submit" className="movie-form_btn text-white">
-          Add Movie to Library
+          {type === "update" ? "Update Movie" : "Add Movie to Library"}
         </Button>
       </form>
     </Form>
   );
 };
+
 export default MovieForm;
