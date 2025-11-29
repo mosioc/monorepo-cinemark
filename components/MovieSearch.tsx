@@ -29,8 +29,9 @@ const MovieSearch = ({ movies, userId }: Props) => {
   }, [movies, searchQuery]);
 
   const hasResults = filteredMovies.length > 0;
-  const heroMovie = filteredMovies[0];
-  const otherMovies = filteredMovies.slice(1);
+  const heroMovie = hasResults ? filteredMovies[0] : null;
+  const otherMovies = hasResults ? filteredMovies.slice(1) : [];
+  const listTitle = searchQuery ? "Search Results" : "Latest Movies";
 
   return (
     <>
@@ -51,24 +52,20 @@ const MovieSearch = ({ movies, userId }: Props) => {
         />
       </div>
 
-      {!searchQuery && hasResults && (
-        <>
-          {heroMovie && (
-            <div className="mt-10">
-              <MovieHeroClient {...heroMovie} userId={userId} />
-            </div>
-          )}
-          {otherMovies.length > 0 && (
-            <MovieList
-              title="Latest Movies"
-              movies={otherMovies}
-              containerClassName="mt-28"
-            />
-          )}
-        </>
+      {/* show empty state when no movies exist at all */}
+      {movies.length === 0 && (
+        <div className="flex items-center justify-center min-h-[40vh] mt-10">
+          <div className="text-center">
+            <h2 className="text-2xl font-bold mb-2 text-white">
+              No movies available
+            </h2>
+            <p className="text-light-100">Check back later for new releases</p>
+          </div>
+        </div>
       )}
 
-      {searchQuery && !hasResults && (
+      {/* show no results message when search returns nothing */}
+      {movies.length > 0 && searchQuery && !hasResults && (
         <div className="flex items-center justify-center min-h-[40vh] mt-10">
           <div className="text-center">
             <h2 className="text-2xl font-bold mb-2 text-white">
@@ -81,7 +78,8 @@ const MovieSearch = ({ movies, userId }: Props) => {
         </div>
       )}
 
-      {searchQuery && hasResults && (
+      {/* show movies (hero + list) when results exist */}
+      {movies.length > 0 && hasResults && (
         <>
           {heroMovie && (
             <div className="mt-10">
@@ -90,7 +88,7 @@ const MovieSearch = ({ movies, userId }: Props) => {
           )}
           {otherMovies.length > 0 && (
             <MovieList
-              title="Search Results"
+              title={listTitle}
               movies={otherMovies}
               containerClassName="mt-28"
             />
@@ -102,4 +100,3 @@ const MovieSearch = ({ movies, userId }: Props) => {
 };
 
 export default MovieSearch;
-
