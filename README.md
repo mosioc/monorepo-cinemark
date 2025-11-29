@@ -24,7 +24,7 @@ Cinemark is a full-stack web application that enables users to browse, search, a
 
 ## Technology Stack
 
-**Frontend**
+### Frontend
 - Next.js 16 (App Router)
 - React 19
 - TailwindCSS 4
@@ -33,7 +33,7 @@ Cinemark is a full-stack web application that enables users to browse, search, a
 - React Hook Form
 - ImageKit React SDK
 
-**Backend**
+### Backend
 - Next.js Server Actions
 - NextAuth v5 (Credentials Provider)
 - Drizzle ORM
@@ -42,7 +42,7 @@ Cinemark is a full-stack web application that enables users to browse, search, a
 - Upstash QStash Workflows
 - Resend (Email automation)
 
-**Testing & Tooling**
+### Testing & Tooling
 - Jest
 - React Testing Library
 - Drizzle Kit
@@ -50,7 +50,7 @@ Cinemark is a full-stack web application that enables users to browse, search, a
 - TypeScript 5
 - tsx
 
-**Deployment & DevOps**
+### Deployment & DevOps
 - Vercel (recommended)
 - Environment variables via `.env.local`
 - Automated workflows with Upstash
