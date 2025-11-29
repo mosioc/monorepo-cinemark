@@ -27,17 +27,17 @@ export const adminSideBarLinks = [
     img: "/icons/admin/movie.svg",
     route: "/admin/movies",
     text: "All Movies",
-  },
-  {
-    img: "/icons/admin/bookmark.svg",
-    route: "/admin/purchase-records",
-    text: "Purchase Records",
-  },
-  {
-    img: "/icons/admin/user.svg",
-    route: "/admin/account-requests",
-    text: "Account Requests",
-  },
+  }
+  // {
+  //   img: "/icons/admin/bookmark.svg",
+  //   route: "/admin/purchase-records",
+  //   text: "Purchase Records",
+  // },
+  // {
+  //   img: "/icons/admin/user.svg",
+  //   route: "/admin/account-requests",
+  //   text: "Account Requests",
+  // },
 ];
 
 export const FIELD_NAMES = {

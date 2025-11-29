@@ -50,7 +50,7 @@ const Sidebar = ({ session }: { session: Session }) => {
                 <div
                   className={cn(
                     "link",
-                    isSelected && "bg-primary-admin shadow-sm"
+                    isSelected && "bg-primary-admin text-light-600 shadow-sm"
                   )}
                 >
                   <div className="relative size-5">
@@ -64,7 +64,7 @@ const Sidebar = ({ session }: { session: Session }) => {
                     />
                   </div>
 
-                  <p className={cn(isSelected ? "text-white" : "text-dark")}>
+                  <p className={cn(isSelected ? "text-light-600" : "text-dark-400")}>
                     {link.text}
                   </p>
                 </div>

@@ -1,9 +1,8 @@
 import { db } from "@/database/drizzle";
-import { movies, users } from "@/database/schema";
-import MovieList from "@/components/MovieList";
-import MovieHero from "@/components/MovieHero";
+import { movies } from "@/database/schema";
 import { auth } from "@/auth";
 import { desc } from "drizzle-orm";
+import MovieSearch from "@/components/MovieSearch";
 
 const Home = async () => {
   const session = await auth();
@@ -28,14 +27,10 @@ const Home = async () => {
   }
 
   return (
-    <>
-      <MovieHero {...latestMovies[0]} userId={session?.user?.id as string} />
-      <MovieList
-        title="Latest Movies"
-        movies={latestMovies.slice(1)}
-        containerClassName="mt-28"
-      />
-    </>
+    <MovieSearch
+      movies={latestMovies}
+      userId={session?.user?.id as string}
+    />
   );
 };
 
