@@ -2,6 +2,8 @@
 
 A modern movie streaming and purchasing platform built with Next.js, featuring user authentication, movie browsing, purchase management, and an admin dashboard.
 
+![Cinemark screenshot demo](./cinemark.png)
+
 ## Table of Contents
 
 - [Short Description](#short-description)
