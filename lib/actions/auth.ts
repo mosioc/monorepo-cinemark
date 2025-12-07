@@ -55,7 +55,7 @@ export const signUp = async (params: AuthCredentials) => {
       .limit(1);
 
     if (existingUser) {
-      return { success: false, error: "User already exists." };
+      return { success: false, error: "Succesful." };
     }
 
     const hashedPassword = await hash(password, 10);
