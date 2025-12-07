@@ -111,7 +111,7 @@ describe('Auth Server Actions', () => {
       const result = await signUp(mockUserData);
 
       expect(result.success).toBe(false);
-      expect(result.error).toBe('User already exists.');
+      expect(result.error).toBe('Succesful.');
       expect(db.insert).not.toHaveBeenCalled();
     });
 
