@@ -30,7 +30,7 @@
     "clsx": "^2.1.1",
     "dayjs": "^1.11.19",
     "dotenv": "^17.2.3",
-    "drizzle-orm": "^0.44.7",
+    "drizzle-orm": "^0.45.2",
     "imagekit": "^6.0.0",
     "imagekitio-react": "^4.3.0",
     "lucide-react": "^0.554.0",
