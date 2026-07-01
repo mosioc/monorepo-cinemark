@@ -19,7 +19,6 @@ A modern movie streaming and purchasing platform built with Next.js, featuring u
 - [Database](#database)
 - [Contribution Guidelines](#contribution-guidelines)
 
-
 ## Short Description
 
 Cinemark is a full-stack web application that enables users to browse, search, and purchase movies. The platform includes role-based access control with separate interfaces for regular users and administrators. Built with Next.js 16 App Router, it leverages server components, server actions, and modern React patterns to deliver a performant and scalable movie streaming experience.
@@ -27,6 +26,7 @@ Cinemark is a full-stack web application that enables users to browse, search, a
 ## Technology Stack
 
 ### Frontend
+
 - Next.js 16 (App Router)
 - React 19
 - TailwindCSS 4
@@ -36,6 +36,7 @@ Cinemark is a full-stack web application that enables users to browse, search, a
 - ImageKit React SDK
 
 ### Backend
+
 - Next.js Server Actions
 - NextAuth v5 (Credentials Provider)
 - Drizzle ORM
@@ -45,6 +46,7 @@ Cinemark is a full-stack web application that enables users to browse, search, a
 - Resend (Email automation)
 
 ### Testing & Tooling
+
 - Jest
 - React Testing Library
 - Drizzle Kit
@@ -53,6 +55,7 @@ Cinemark is a full-stack web application that enables users to browse, search, a
 - tsx
 
 ### Deployment & DevOps
+
 - Vercel (recommended)
 - Environment variables via `.env.local`
 - Automated workflows with Upstash
@@ -88,6 +91,8 @@ Cinemark is a full-stack web application that enables users to browse, search, a
 ## Architecture Overview
 
 The application follows a modern Next.js architecture with clear separation between client and server components, server actions for data mutations, and a well-structured database layer.
+
+- [Architectural Decision Records (ADRs)](./docs/adr/)
 
 ```mermaid
 graph TB
@@ -161,13 +166,13 @@ git clone <repository-url>
 cd monorepo-cinemark
 ```
 
-2. **Install dependencies**
+1. **Install dependencies**
 
 ```bash
 npm install
 ```
 
-3. **Set up environment variables**
+1. **Set up environment variables**
 
 Create a `.env.local` file in the root directory with the following variables:
 
@@ -200,7 +205,7 @@ NEXT_PUBLIC_API_ENDPOINT=http://localhost:3000
 NEXT_PUBLIC_PROD_API_ENDPOINT=https://your-production-url.com
 ```
 
-4. **Set up the database**
+1. **Set up the database**
 
 Generate and run migrations:
 
@@ -209,13 +214,13 @@ npm run db:generate
 npm run db:migrate
 ```
 
-5. **Seed the database (optional)**
+1. **Seed the database (optional)**
 
 ```bash
 npm run seed
 ```
 
-6. **Start the development server**
+1. **Start the development server**
 
 ```bash
 npm run dev
