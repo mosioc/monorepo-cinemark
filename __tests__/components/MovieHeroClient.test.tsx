@@ -21,8 +21,8 @@ jest.mock('@/components/MovieCover', () => ({
 
 jest.mock('@/components/MovieBuy', () => ({
   __esModule: true,
-  default: ({ movieId, userId }: any) => (
-    <div data-testid="movie-buy" data-movie-id={movieId} data-user-id={userId}>
+  default: ({ movieId, isPurchased }: any) => (
+    <div data-testid="movie-buy" data-movie-id={movieId} data-is-purchased={isPurchased}>
       Buy Button
     </div>
   ),
@@ -35,19 +35,18 @@ jest.mock('next/image', () => ({
   ),
 }))
 
-const mockMovie: Movie & { userId: string } = {
+const mockMovie: Movie = {
   id: 'movie-123',
   title: 'The Matrix',
   director: 'Wachowski Sisters',
   genre: 'Sci-Fi',
-  rating: 8.7,
+  rating: '4.7',
   description: 'A computer hacker learns from mysterious rebels about the true nature of his reality and his role in the war against its controllers.',
+  summary: 'A hacker discovers the nature of his reality.',
   coverColor: '#000000',
   coverUrl: '/matrix-cover.jpg',
-  price: 9.99,
-  totalPurchases: 1000,
   createdAt: new Date('2024-01-01'),
-  userId: 'user-456',
+  isPurchased: true,
 }
 
 describe('MovieHeroClient Component', () => {
@@ -72,12 +71,12 @@ describe('MovieHeroClient Component', () => {
 
     it('should render the rating', () => {
       render(<MovieHeroClient {...mockMovie} />)
-      expect(screen.getByText('8.7')).toBeInTheDocument()
+      expect(screen.getByText('4.7')).toBeInTheDocument()
     })
 
     it('should render the star icon for rating', () => {
       render(<MovieHeroClient {...mockMovie} />)
-      const starIcon = screen.getByAlt('star')
+      const starIcon = screen.getByRole('img', { name: 'star' })
       expect(starIcon).toBeInTheDocument()
       expect(starIcon).toHaveAttribute('src', '/icons/star.svg')
       expect(starIcon).toHaveAttribute('width', '22')
@@ -94,7 +93,7 @@ describe('MovieHeroClient Component', () => {
       const buyButton = screen.getByTestId('movie-buy')
       expect(buyButton).toBeInTheDocument()
       expect(buyButton).toHaveAttribute('data-movie-id', 'movie-123')
-      expect(buyButton).toHaveAttribute('data-user-id', 'user-456')
+      expect(buyButton).toHaveAttribute('data-is-purchased', 'true')
     })
   })
 
@@ -274,13 +273,12 @@ describe('MovieHeroClient Component', () => {
         title: 'Test Title',
         director: 'Test Director',
         genre: 'Test Genre',
-        rating: 5.0,
+        rating: '5.0',
         description: 'Test Description',
         coverColor: '#FFFFFF',
         coverUrl: '/test.jpg',
-        userId: 'test-user',
-        price: 10.0,
-        totalPurchases: 0,
+        summary: 'Test summary',
+        isPurchased: false,
         createdAt: new Date(),
       }
       
@@ -288,17 +286,17 @@ describe('MovieHeroClient Component', () => {
       expect(screen.getByText('Test Title')).toBeInTheDocument()
       expect(screen.getByText('Test Director')).toBeInTheDocument()
       expect(screen.getByText('Test Genre')).toBeInTheDocument()
-      expect(screen.getByText('5')).toBeInTheDocument()
+      expect(screen.getByText('5.0')).toBeInTheDocument()
       expect(screen.getByText('Test Description')).toBeInTheDocument()
     })
   })
 
   describe('Integration with Child Components', () => {
-    it('should pass movieId and userId to MovieBuy', () => {
+    it('should pass movie ID and ownership state to MovieBuy', () => {
       render(<MovieHeroClient {...mockMovie} />)
       const buyButton = screen.getByTestId('movie-buy')
       expect(buyButton.dataset.movieId).toBe(mockMovie.id)
-      expect(buyButton.dataset.userId).toBe(mockMovie.userId)
+      expect(buyButton.dataset.isPurchased).toBe('true')
     })
 
     it('should pass cover properties to MovieCover', () => {

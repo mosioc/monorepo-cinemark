@@ -8,7 +8,7 @@ interface Props {
 }
 
 const MovieList = ({ title, movies, containerClassName }: Props) => {
-  if (movies.length < 2) return;
+  if (movies.length === 0) return;
 
   return (
     <section className={containerClassName}>

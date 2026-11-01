@@ -7,11 +7,11 @@ import { useRouter } from "next/navigation";
 import { purchaseMovie } from "@/lib/actions/movie";
 
 interface Props {
-  userId: string;
   movieId: string;
+  isPurchased?: boolean;
 }
 
-const MovieBuy = ({ userId, movieId }: Props) => {
+const MovieBuy = ({ movieId, isPurchased = false }: Props) => {
   const router = useRouter();
   const [adding, setAdding] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -23,7 +23,7 @@ const MovieBuy = ({ userId, movieId }: Props) => {
     setSuccess(false);
 
     try {
-      const result = await purchaseMovie({ movieId, userId });
+      const result = await purchaseMovie(movieId);
 
       if (result.success) {
         setSuccess(true);
@@ -45,15 +45,21 @@ const MovieBuy = ({ userId, movieId }: Props) => {
       <Button
         className="movie-overview_btn"
         onClick={handleAddToLibrary}
-        disabled={adding || success}
+        disabled={adding || success || isPurchased}
       >
-        <Image src="/icons/movie.svg" alt="add to library" width={20} height={20} />
+        <Image src="/icons/movie.svg" alt="" width={20} height={20} />
         <p className="font-bebas-neue text-xl text-dark-100">
-          {adding ? "Adding ..." : success ? "Added to Library!" : "Add Movie to My Library"}
+          {isPurchased
+            ? "Already in My Library"
+            : adding
+              ? "Adding ..."
+              : success
+                ? "Added to Library!"
+                : "Add Movie to My Library"}
         </p>
       </Button>
-      {error && <p className="text-red-500 mt-2">{error}</p>}
-      {success && <p className="text-green-500 mt-2">Movie added successfully!</p>}
+      {error && <p role="alert" className="text-red-500 mt-2">{error}</p>}
+      {success && <p role="status" className="text-green-500 mt-2">Movie added successfully!</p>}
     </div>
   );
 };

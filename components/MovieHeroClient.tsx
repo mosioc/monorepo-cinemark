@@ -5,9 +5,7 @@ import Image from "next/image";
 import MovieCover from "@/components/MovieCover";
 import MovieBuy from "@/components/MovieBuy";
 
-interface Props extends Movie {
-  userId: string;
-}
+type Props = Movie;
 
 const MovieHeroClient = ({
   title,
@@ -18,7 +16,7 @@ const MovieHeroClient = ({
   coverColor,
   coverUrl,
   id,
-  userId,
+  isPurchased,
 }: Props) => {
   return (
     <section className="movie-overview">
@@ -43,7 +41,7 @@ const MovieHeroClient = ({
 
         <p className="movie-description">{description}</p>
 
-        <MovieBuy movieId={id} userId={userId} />
+        <MovieBuy movieId={id} isPurchased={isPurchased} />
       </div>
 
       <div className="relative flex flex-1 justify-center">

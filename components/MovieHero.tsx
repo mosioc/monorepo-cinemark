@@ -2,13 +2,8 @@ import React from "react";
 import Image from "next/image";
 import MovieCover from "@/components/MovieCover";
 import MovieBuy from "@/components/MovieBuy";
-import { db } from "@/database/drizzle";
-import { users } from "@/database/schema";
-import { eq } from "drizzle-orm";
 
-interface Props extends Movie {
-  userId: string;
-}
+type Props = Movie;
 
 const MovieHero = async ({
   title,
@@ -19,14 +14,8 @@ const MovieHero = async ({
   coverColor,
   coverUrl,
   id,
-  userId,
+  isPurchased,
 }: Props) => {
-  const [user] = await db
-    .select()
-    .from(users)
-    .where(eq(users.id, userId))
-    .limit(1);
-
   return (
     <section className="movie-overview">
       <div className="flex flex-1 flex-col gap-5">
@@ -50,7 +39,7 @@ const MovieHero = async ({
 
         <p className="movie-description">{description}</p>
 
-        {user && <MovieBuy movieId={id} userId={userId} />}
+        <MovieBuy movieId={id} isPurchased={isPurchased} />
       </div>
 
       <div className="relative flex flex-1 justify-center">

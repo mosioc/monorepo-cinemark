@@ -1,125 +1,112 @@
-import { purchaseMovie } from '@/lib/actions/movie';
-import { db } from '@/database/drizzle';
-import { movies, purchases } from '@/database/schema';
+import { purchaseMovie } from "@/lib/actions/movie";
+import { auth } from "@/auth";
+import { db } from "@/database/drizzle";
+import { purchases } from "@/database/schema";
 
-// mock database
-jest.mock('@/database/drizzle', () => ({
+jest.mock("@/auth", () => ({ auth: jest.fn() }));
+
+jest.mock("@/database/drizzle", () => ({
   db: {
     select: jest.fn(),
     insert: jest.fn(),
   },
 }));
 
-describe('Movie Purchase Server Action', () => {
+describe("purchaseMovie", () => {
+  const userId = "11111111-1111-4111-8111-111111111111";
+  const movieId = "22222222-2222-4222-8222-222222222222";
+
   beforeEach(() => {
     jest.clearAllMocks();
+    (auth as jest.Mock).mockResolvedValue({ user: { id: userId } });
   });
 
-  const mockParams = {
-    userId: 'user-123',
-    movieId: 'movie-456',
+  const mockMovieLookup = (rows: unknown[]) => {
+    const limit = jest.fn().mockResolvedValue(rows);
+    const where = jest.fn().mockReturnValue({ limit });
+    const from = jest.fn().mockReturnValue({ where });
+    (db.select as jest.Mock).mockReturnValue({ from });
   };
 
-  it('should purchase movie successfully', async () => {
-    // mock movie exists
-    const mockMovieSelect = jest.fn().mockReturnValue({
-      from: jest.fn().mockReturnValue({
-        where: jest.fn().mockReturnValue({
-          limit: jest.fn().mockResolvedValue([{ id: 'movie-456', title: 'Test Movie' }]),
-        }),
-      }),
+  const mockInsert = (rows: unknown[]) => {
+    const returning = jest.fn().mockResolvedValue(rows);
+    const onConflictDoNothing = jest.fn().mockReturnValue({ returning });
+    const values = jest.fn().mockReturnValue({ onConflictDoNothing });
+    (db.insert as jest.Mock).mockReturnValue({ values });
+    return { values, onConflictDoNothing, returning };
+  };
+
+  it("uses the signed-in user's ID and atomically adds an existing movie", async () => {
+    mockMovieLookup([{ id: movieId, title: "Test Movie" }]);
+    const insert = mockInsert([{ id: "33333333-3333-4333-8333-333333333333" }]);
+
+    const result = await purchaseMovie(movieId);
+
+    expect(result).toEqual({
+      success: true,
+      data: { id: "33333333-3333-4333-8333-333333333333" },
     });
-
-    // mock no existing purchase
-    const mockPurchaseSelect = jest.fn().mockReturnValue({
-      from: jest.fn().mockReturnValue({
-        where: jest.fn().mockReturnValue({
-          limit: jest.fn().mockResolvedValue([]),
-        }),
-      }),
+    expect(insert.values).toHaveBeenCalledWith(
+      expect.objectContaining({ userId, movieId, purchaseStatus: "COMPLETED" })
+    );
+    expect(insert.onConflictDoNothing).toHaveBeenCalledWith({
+      target: [purchases.userId, purchases.movieId],
     });
-
-    // mock insert purchase
-    const mockInsert = jest.fn().mockReturnValue({
-      values: jest.fn().mockResolvedValue([{ id: 'purchase-123' }]),
-    });
-
-    (db.select as jest.Mock)
-      .mockReturnValueOnce(mockMovieSelect()) // first call for movie
-      .mockReturnValueOnce(mockPurchaseSelect()); // second call for purchase
-
-    (db.insert as jest.Mock).mockReturnValue(mockInsert());
-
-    const result = await purchaseMovie(mockParams);
-
-    expect(result.success).toBe(true);
-    expect(result.data).toBeDefined();
-    expect(db.insert).toHaveBeenCalled();
   });
 
-  it('should reject purchase when movie not found', async () => {
-    const mockSelect = jest.fn().mockReturnValue({
-      from: jest.fn().mockReturnValue({
-        where: jest.fn().mockReturnValue({
-          limit: jest.fn().mockResolvedValue([]), // no movie found
-        }),
-      }),
+  it("rejects calls without an authenticated session", async () => {
+    (auth as jest.Mock).mockResolvedValue(null);
+
+    const result = await purchaseMovie(movieId);
+
+    expect(result).toEqual({
+      success: false,
+      error: "You must be signed in to add movies",
     });
-
-    (db.select as jest.Mock).mockReturnValue(mockSelect());
-
-    const result = await purchaseMovie(mockParams);
-
-    expect(result.success).toBe(false);
-    expect(result.error).toBe('Movie not found');
+    expect(db.select).not.toHaveBeenCalled();
     expect(db.insert).not.toHaveBeenCalled();
   });
 
-  it('should reject duplicate purchase', async () => {
-    // mock movie exists
-    const mockMovieSelect = jest.fn().mockReturnValue({
-      from: jest.fn().mockReturnValue({
-        where: jest.fn().mockReturnValue({
-          limit: jest.fn().mockResolvedValue([{ id: 'movie-456', title: 'Test Movie' }]),
-        }),
-      }),
-    });
+  it("rejects invalid movie IDs before querying the database", async () => {
+    const result = await purchaseMovie("not-a-uuid");
 
-    // mock existing purchase
-    const mockPurchaseSelect = jest.fn().mockReturnValue({
-      from: jest.fn().mockReturnValue({
-        where: jest.fn().mockReturnValue({
-          limit: jest.fn().mockResolvedValue([{ id: 'purchase-123' }]), // purchase exists
-        }),
-      }),
-    });
+    expect(result).toEqual({ success: false, error: "Invalid movie" });
+    expect(auth).not.toHaveBeenCalled();
+    expect(db.select).not.toHaveBeenCalled();
+  });
 
-    (db.select as jest.Mock)
-      .mockReturnValueOnce(mockMovieSelect())
-      .mockReturnValueOnce(mockPurchaseSelect());
+  it("returns an error when the movie does not exist", async () => {
+    mockMovieLookup([]);
 
-    const result = await purchaseMovie(mockParams);
+    const result = await purchaseMovie(movieId);
 
-    expect(result.success).toBe(false);
-    expect(result.error).toBe('You have already added this movie to your library');
+    expect(result).toEqual({ success: false, error: "Movie not found" });
     expect(db.insert).not.toHaveBeenCalled();
   });
 
-  it('should handle database errors', async () => {
-    const mockSelect = jest.fn().mockReturnValue({
-      from: jest.fn().mockReturnValue({
-        where: jest.fn().mockReturnValue({
-          limit: jest.fn().mockRejectedValue(new Error('Database error')),
-        }),
-      }),
+  it("treats a uniqueness conflict as an already-owned movie", async () => {
+    mockMovieLookup([{ id: movieId, title: "Test Movie" }]);
+    mockInsert([]);
+
+    const result = await purchaseMovie(movieId);
+
+    expect(result).toEqual({
+      success: false,
+      error: "You have already added this movie to your library",
     });
+  });
 
-    (db.select as jest.Mock).mockReturnValue(mockSelect());
+  it("returns a safe error when the database fails", async () => {
+    const limit = jest.fn().mockRejectedValue(new Error("Database error"));
+    const where = jest.fn().mockReturnValue({ limit });
+    const from = jest.fn().mockReturnValue({ where });
+    (db.select as jest.Mock).mockReturnValue({ from });
 
-    const result = await purchaseMovie(mockParams);
+    const result = await purchaseMovie(movieId);
 
-    expect(result.success).toBe(false);
-    expect(result.error).toBe('An error occurred while adding the movie to your library');
+    expect(result).toEqual({
+      success: false,
+      error: "An error occurred while adding the movie to your library",
+    });
   });
 });
-

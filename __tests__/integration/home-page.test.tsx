@@ -38,18 +38,17 @@ jest.mock('next/image', () => ({
 
 describe('Home Page Integration Tests', () => {
   const mockMovies = createMockMovies(10)
-  const userId = 'test-user-123'
 
   describe('User Journey: Browse Movies', () => {
     it('should display all movies on initial load', () => {
-      render(<MovieSearch movies={mockMovies} userId={userId} />)
+      render(<MovieSearch movies={mockMovies} />)
       
       expect(screen.getByTestId('movie-hero')).toBeInTheDocument()
       expect(screen.getByText('Latest Movies')).toBeInTheDocument()
     })
 
     it('should allow user to search and find specific movie', async () => {
-      render(<MovieSearch movies={mockMovies} userId={userId} />)
+      render(<MovieSearch movies={mockMovies} />)
       
       const searchInput = screen.getByPlaceholderText(/search movies/i)
       fireEvent.change(searchInput, { target: { value: 'Movie 5' } })
@@ -61,7 +60,7 @@ describe('Home Page Integration Tests', () => {
     })
 
     it('should show no results message for invalid search', async () => {
-      render(<MovieSearch movies={mockMovies} userId={userId} />)
+      render(<MovieSearch movies={mockMovies} />)
       
       const searchInput = screen.getByPlaceholderText(/search movies/i)
       fireEvent.change(searchInput, { target: { value: 'NonexistentMovie' } })
@@ -72,7 +71,7 @@ describe('Home Page Integration Tests', () => {
     })
 
     it('should restore all movies when search is cleared', async () => {
-      render(<MovieSearch movies={mockMovies} userId={userId} />)
+      render(<MovieSearch movies={mockMovies} />)
       
       const searchInput = screen.getByPlaceholderText(/search movies/i) as HTMLInputElement
       
@@ -91,7 +90,7 @@ describe('Home Page Integration Tests', () => {
 
   describe('User Journey: Search by Different Criteria', () => {
     it('should search by director name', async () => {
-      render(<MovieSearch movies={mockMovies} userId={userId} />)
+      render(<MovieSearch movies={mockMovies} />)
       
       const searchInput = screen.getByPlaceholderText(/search movies/i)
       fireEvent.change(searchInput, { target: { value: 'Director 3' } })
@@ -107,7 +106,7 @@ describe('Home Page Integration Tests', () => {
         genre: i % 2 === 0 ? 'Action' : 'Drama',
       }))
       
-      render(<MovieSearch movies={moviesWithGenres} userId={userId} />)
+      render(<MovieSearch movies={moviesWithGenres} />)
       
       const searchInput = screen.getByPlaceholderText(/search movies/i)
       fireEvent.change(searchInput, { target: { value: 'Drama' } })
@@ -118,7 +117,7 @@ describe('Home Page Integration Tests', () => {
     })
 
     it('should handle partial matches', async () => {
-      render(<MovieSearch movies={mockMovies} userId={userId} />)
+      render(<MovieSearch movies={mockMovies} />)
       
       const searchInput = screen.getByPlaceholderText(/search movies/i)
       fireEvent.change(searchInput, { target: { value: 'Mov' } })
@@ -134,18 +133,18 @@ describe('Home Page Integration Tests', () => {
       const largeMovieCollection = createMockMovies(100)
       
       const { rerender } = render(
-        <MovieSearch movies={largeMovieCollection} userId={userId} />
+        <MovieSearch movies={largeMovieCollection} />
       )
       
       expect(screen.getByTestId('movie-hero')).toBeInTheDocument()
       
-      rerender(<MovieSearch movies={largeMovieCollection} userId={userId} />)
+      rerender(<MovieSearch movies={largeMovieCollection} />)
       
       expect(screen.getByTestId('movie-hero')).toBeInTheDocument()
     })
 
     it('should debounce search effectively', async () => {
-      render(<MovieSearch movies={mockMovies} userId={userId} />)
+      render(<MovieSearch movies={mockMovies} />)
       
       const searchInput = screen.getByPlaceholderText(/search movies/i)
       
@@ -162,7 +161,7 @@ describe('Home Page Integration Tests', () => {
 
   describe('Accessibility', () => {
     it('should be keyboard navigable', () => {
-      render(<MovieSearch movies={mockMovies} userId={userId} />)
+      render(<MovieSearch movies={mockMovies} />)
       
       const searchInput = screen.getByPlaceholderText(/search movies/i)
       searchInput.focus()
@@ -171,7 +170,7 @@ describe('Home Page Integration Tests', () => {
     })
 
     it('should have proper ARIA labels', () => {
-      render(<MovieSearch movies={mockMovies} userId={userId} />)
+      render(<MovieSearch movies={mockMovies} />)
       
       const searchInput = screen.getByPlaceholderText(/search movies/i)
       expect(searchInput).toHaveAttribute('type', 'text')
