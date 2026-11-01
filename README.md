@@ -68,7 +68,7 @@ Cinemark is a full-stack web application that enables users to browse, search, a
 - **Movie Browsing**: Browse and search through available movies
 - **Movie Details**: View detailed information about each movie including ratings, descriptions, and summaries
 - **Purchase Management**: Add movies to personal library with purchase tracking
-- **User Profile**: Access personal profile and purchase history
+- **User Profile**: View the signed-in user's movie library
 - **Rate Limiting**: Protection against brute force attacks on authentication endpoints
 
 ### Admin Features
@@ -578,25 +578,31 @@ sequenceDiagram
     participant User
     participant MovieBuy
     participant ServerAction
+    participant Auth
     participant Database
     participant UI
     
     User->>MovieBuy: Click "Add to Library"
-    MovieBuy->>ServerAction: purchaseMovie()
-    ServerAction->>Database: Check movie exists
-    Database-->>ServerAction: Movie data
-    ServerAction->>Database: Check existing purchase
-    Database-->>ServerAction: Purchase status
-    alt Movie not found
-        ServerAction-->>MovieBuy: Error: Movie not found
-    else Already purchased
-        ServerAction-->>MovieBuy: Error: Already in library
-    else Success
-        ServerAction->>Database: Insert purchase
-        Database-->>ServerAction: Purchase record
-        ServerAction-->>MovieBuy: Success
-        MovieBuy->>UI: Refresh page
-        UI-->>User: Show updated state
+    MovieBuy->>ServerAction: purchaseMovie(movieId)
+    ServerAction->>Auth: Read current session
+    alt Not signed in
+        Auth-->>ServerAction: No user
+        ServerAction-->>MovieBuy: Error: Sign in required
+    else Signed in
+        Auth-->>ServerAction: Authenticated user ID
+        ServerAction->>Database: Check movie exists
+        Database-->>ServerAction: Movie data
+        ServerAction->>Database: Insert for session user, ignore unique conflict
+        Database-->>ServerAction: Purchase row or no row
+        alt Movie not found
+            ServerAction-->>MovieBuy: Error: Movie not found
+        else Already in library
+            ServerAction-->>MovieBuy: Error: Already in library
+        else Success
+            ServerAction-->>MovieBuy: Success
+            MovieBuy->>UI: Refresh page
+            UI-->>User: Show updated library state
+        end
     end
 ```
 

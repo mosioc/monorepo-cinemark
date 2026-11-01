@@ -36,7 +36,6 @@ describe('MovieBuy Component', () => {
   });
 
   const defaultProps = {
-    userId: 'user-123',
     movieId: 'movie-456',
   };
 
@@ -84,6 +83,13 @@ describe('MovieBuy Component', () => {
     });
   });
 
+  it('should show the owned state and prevent another purchase', () => {
+    render(<MovieBuy {...defaultProps} isPurchased />);
+
+    expect(screen.getByRole('button')).toBeDisabled();
+    expect(screen.getByText('Already in My Library')).toBeInTheDocument();
+  });
+
   it('should show error message on failed purchase', async () => {
     (purchaseMovie as jest.Mock).mockResolvedValue({
       success: false,
@@ -126,6 +132,7 @@ describe('MovieBuy Component', () => {
     fireEvent.click(button); // second click should be ignored
 
     expect(purchaseMovie).toHaveBeenCalledTimes(1);
+    expect(purchaseMovie).toHaveBeenCalledWith(defaultProps.movieId);
   });
 });
 

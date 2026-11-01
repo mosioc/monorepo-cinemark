@@ -11,6 +11,7 @@ declare interface Movie {
   coverUrl: string;
   summary: string;
   createdAt: Date | null;
+  isPurchased?: boolean;
 }
 
 declare module "*.css" {

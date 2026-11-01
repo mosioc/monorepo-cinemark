@@ -20,7 +20,7 @@ jest.mock('@/components/MovieHeroClient', () => ({
     <div data-testid="movie-hero">
       <h1>{props.title}</h1>
       <p>{props.director}</p>
-      <p>{props.userId}</p>
+      <p>{props.isPurchased ? 'In library' : 'Not in library'}</p>
     </div>
   ),
 }))
@@ -48,25 +48,24 @@ const mockMovies: Movie[] = [
     title: 'The Matrix',
     director: 'Wachowski Sisters',
     genre: 'Sci-Fi',
-    rating: 8.7,
+    rating: '4.7',
     description: 'A computer hacker learns about the true nature of reality.',
+    summary: 'A hacker discovers reality.',
     coverColor: '#000000',
     coverUrl: '/matrix.jpg',
-    price: 9.99,
-    totalPurchases: 100,
     createdAt: new Date('2024-01-01'),
+    isPurchased: true,
   },
   {
     id: '2',
     title: 'Inception',
     director: 'Christopher Nolan',
     genre: 'Thriller',
-    rating: 8.8,
+    rating: '4.8',
     description: 'A thief who steals corporate secrets through dream-sharing technology.',
+    summary: 'A thief enters dreams.',
     coverColor: '#1a1a1a',
     coverUrl: '/inception.jpg',
-    price: 12.99,
-    totalPurchases: 150,
     createdAt: new Date('2024-01-02'),
   },
   {
@@ -74,35 +73,33 @@ const mockMovies: Movie[] = [
     title: 'Interstellar',
     director: 'Christopher Nolan',
     genre: 'Sci-Fi',
-    rating: 8.6,
+    rating: '4.6',
     description: 'A team of explorers travel through a wormhole in space.',
+    summary: 'Explorers travel through a wormhole.',
     coverColor: '#2a2a2a',
     coverUrl: '/interstellar.jpg',
-    price: 11.99,
-    totalPurchases: 120,
     createdAt: new Date('2024-01-03'),
   },
 ]
 
 describe('MovieSearch Component', () => {
-  const userId = 'test-user-123'
 
   describe('Initial Render', () => {
     it('should render the search input', () => {
-      render(<MovieSearch movies={mockMovies} userId={userId} />)
+      render(<MovieSearch movies={mockMovies} />)
       const searchInput = screen.getByPlaceholderText(/search movies by title, director, or genre/i)
       expect(searchInput).toBeInTheDocument()
     })
 
     it('should render the search icon', () => {
-      render(<MovieSearch movies={mockMovies} userId={userId} />)
-      const searchIcon = screen.getByAlt('search')
+      render(<MovieSearch movies={mockMovies} />)
+      const searchIcon = screen.getByRole('img', { name: 'search' })
       expect(searchIcon).toBeInTheDocument()
       expect(searchIcon).toHaveAttribute('src', '/icons/search-fill.svg')
     })
 
     it('should display hero movie and other movies when no search query', () => {
-      render(<MovieSearch movies={mockMovies} userId={userId} />)
+      render(<MovieSearch movies={mockMovies} />)
       
       // Hero movie should be displayed
       const heroMovie = screen.getByTestId('movie-hero')
@@ -115,16 +112,16 @@ describe('MovieSearch Component', () => {
       expect(screen.getByText('Latest Movies')).toBeInTheDocument()
     })
 
-    it('should pass correct userId to MovieHeroClient', () => {
-      render(<MovieSearch movies={mockMovies} userId={userId} />)
+    it('should pass ownership state to MovieHeroClient', () => {
+      render(<MovieSearch movies={mockMovies} />)
       const heroMovie = screen.getByTestId('movie-hero')
-      expect(heroMovie).toHaveTextContent(userId)
+      expect(heroMovie).toHaveTextContent('In library')
     })
   })
 
   describe('Search Functionality', () => {
     it('should filter movies by title', async () => {
-      render(<MovieSearch movies={mockMovies} userId={userId} />)
+      render(<MovieSearch movies={mockMovies} />)
       const searchInput = screen.getByPlaceholderText(/search movies by title, director, or genre/i)
       
       fireEvent.change(searchInput, { target: { value: 'inception' } })
@@ -136,7 +133,7 @@ describe('MovieSearch Component', () => {
     })
 
     it('should filter movies by director', async () => {
-      render(<MovieSearch movies={mockMovies} userId={userId} />)
+      render(<MovieSearch movies={mockMovies} />)
       const searchInput = screen.getByPlaceholderText(/search movies by title, director, or genre/i)
       
       fireEvent.change(searchInput, { target: { value: 'wachowski' } })
@@ -149,7 +146,7 @@ describe('MovieSearch Component', () => {
     })
 
     it('should filter movies by genre', async () => {
-      render(<MovieSearch movies={mockMovies} userId={userId} />)
+      render(<MovieSearch movies={mockMovies} />)
       const searchInput = screen.getByPlaceholderText(/search movies by title, director, or genre/i)
       
       fireEvent.change(searchInput, { target: { value: 'thriller' } })
@@ -161,7 +158,7 @@ describe('MovieSearch Component', () => {
     })
 
     it('should be case-insensitive', async () => {
-      render(<MovieSearch movies={mockMovies} userId={userId} />)
+      render(<MovieSearch movies={mockMovies} />)
       const searchInput = screen.getByPlaceholderText(/search movies by title, director, or genre/i)
       
       fireEvent.change(searchInput, { target: { value: 'MATRIX' } })
@@ -173,7 +170,7 @@ describe('MovieSearch Component', () => {
     })
 
     it('should trim whitespace from search query', async () => {
-      render(<MovieSearch movies={mockMovies} userId={userId} />)
+      render(<MovieSearch movies={mockMovies} />)
       const searchInput = screen.getByPlaceholderText(/search movies by title, director, or genre/i)
       
       fireEvent.change(searchInput, { target: { value: '  matrix  ' } })
@@ -185,7 +182,7 @@ describe('MovieSearch Component', () => {
     })
 
     it('should update search results in real-time', async () => {
-      render(<MovieSearch movies={mockMovies} userId={userId} />)
+      render(<MovieSearch movies={mockMovies} />)
       const searchInput = screen.getByPlaceholderText(/search movies by title, director, or genre/i)
       
       // First search
@@ -204,7 +201,7 @@ describe('MovieSearch Component', () => {
 
   describe('Search Results Display', () => {
     it('should show "Search Results" title when searching', async () => {
-      render(<MovieSearch movies={mockMovies} userId={userId} />)
+      render(<MovieSearch movies={mockMovies} />)
       const searchInput = screen.getByPlaceholderText(/search movies by title, director, or genre/i)
       
       fireEvent.change(searchInput, { target: { value: 'nolan' } })
@@ -215,12 +212,12 @@ describe('MovieSearch Component', () => {
     })
 
     it('should show "Latest Movies" title when not searching', () => {
-      render(<MovieSearch movies={mockMovies} userId={userId} />)
+      render(<MovieSearch movies={mockMovies} />)
       expect(screen.getByText('Latest Movies')).toBeInTheDocument()
     })
 
     it('should display remaining movies after hero in search results', async () => {
-      render(<MovieSearch movies={mockMovies} userId={userId} />)
+      render(<MovieSearch movies={mockMovies} />)
       const searchInput = screen.getByPlaceholderText(/search movies by title, director, or genre/i)
       
       fireEvent.change(searchInput, { target: { value: 'nolan' } })
@@ -235,7 +232,7 @@ describe('MovieSearch Component', () => {
 
   describe('No Results Handling', () => {
     it('should show "No movies found" message when search yields no results', async () => {
-      render(<MovieSearch movies={mockMovies} userId={userId} />)
+      render(<MovieSearch movies={mockMovies} />)
       const searchInput = screen.getByPlaceholderText(/search movies by title, director, or genre/i)
       
       fireEvent.change(searchInput, { target: { value: 'nonexistent movie' } })
@@ -247,7 +244,7 @@ describe('MovieSearch Component', () => {
     })
 
     it('should not show hero or movie list when no results', async () => {
-      render(<MovieSearch movies={mockMovies} userId={userId} />)
+      render(<MovieSearch movies={mockMovies} />)
       const searchInput = screen.getByPlaceholderText(/search movies by title, director, or genre/i)
       
       fireEvent.change(searchInput, { target: { value: 'xyz123' } })
@@ -259,20 +256,20 @@ describe('MovieSearch Component', () => {
     })
 
     it('should not show no results message when not searching', () => {
-      render(<MovieSearch movies={mockMovies} userId={userId} />)
+      render(<MovieSearch movies={mockMovies} />)
       expect(screen.queryByText('No movies found')).not.toBeInTheDocument()
     })
   })
 
   describe('Edge Cases', () => {
     it('should handle empty movies array', () => {
-      render(<MovieSearch movies={[]} userId={userId} />)
+      render(<MovieSearch movies={[]} />)
       expect(screen.queryByTestId('movie-hero')).not.toBeInTheDocument()
       expect(screen.queryByTestId('movie-list')).not.toBeInTheDocument()
     })
 
     it('should handle single movie in array', () => {
-      render(<MovieSearch movies={[mockMovies[0]]} userId={userId} />)
+      render(<MovieSearch movies={[mockMovies[0]]} />)
       
       const heroMovie = screen.getByTestId('movie-hero')
       expect(heroMovie).toBeInTheDocument()
@@ -283,7 +280,7 @@ describe('MovieSearch Component', () => {
     })
 
     it('should handle empty search query (only whitespace)', () => {
-      render(<MovieSearch movies={mockMovies} userId={userId} />)
+      render(<MovieSearch movies={mockMovies} />)
       const searchInput = screen.getByPlaceholderText(/search movies by title, director, or genre/i)
       
       fireEvent.change(searchInput, { target: { value: '   ' } })
@@ -294,7 +291,7 @@ describe('MovieSearch Component', () => {
     })
 
     it('should handle special characters in search', async () => {
-      render(<MovieSearch movies={mockMovies} userId={userId} />)
+      render(<MovieSearch movies={mockMovies} />)
       const searchInput = screen.getByPlaceholderText(/search movies by title, director, or genre/i)
       
       fireEvent.change(searchInput, { target: { value: 'sci-fi' } })
@@ -306,7 +303,7 @@ describe('MovieSearch Component', () => {
     })
 
     it('should handle partial word matches', async () => {
-      render(<MovieSearch movies={mockMovies} userId={userId} />)
+      render(<MovieSearch movies={mockMovies} />)
       const searchInput = screen.getByPlaceholderText(/search movies by title, director, or genre/i)
       
       fireEvent.change(searchInput, { target: { value: 'inter' } })
@@ -318,7 +315,7 @@ describe('MovieSearch Component', () => {
     })
 
     it('should clear search when input is cleared', async () => {
-      render(<MovieSearch movies={mockMovies} userId={userId} />)
+      render(<MovieSearch movies={mockMovies} />)
       const searchInput = screen.getByPlaceholderText(/search movies by title, director, or genre/i) as HTMLInputElement
       
       // Enter search
@@ -338,20 +335,20 @@ describe('MovieSearch Component', () => {
 
   describe('Performance and Memoization', () => {
     it('should not re-filter when search query has not changed', () => {
-      const { rerender } = render(<MovieSearch movies={mockMovies} userId={userId} />)
+      const { rerender } = render(<MovieSearch movies={mockMovies} />)
       const searchInput = screen.getByPlaceholderText(/search movies by title, director, or genre/i)
       
       fireEvent.change(searchInput, { target: { value: 'matrix' } })
       
       // Force re-render without changing search
-      rerender(<MovieSearch movies={mockMovies} userId={userId} />)
+      rerender(<MovieSearch movies={mockMovies} />)
       
       // Should still show Matrix as hero
       expect(screen.getByTestId('movie-hero')).toHaveTextContent('The Matrix')
     })
 
     it('should handle rapid consecutive searches', async () => {
-      render(<MovieSearch movies={mockMovies} userId={userId} />)
+      render(<MovieSearch movies={mockMovies} />)
       const searchInput = screen.getByPlaceholderText(/search movies by title, director, or genre/i)
       
       // Rapid fire searches
@@ -369,7 +366,7 @@ describe('MovieSearch Component', () => {
 
   describe('Accessibility', () => {
     it('should have proper input attributes', () => {
-      render(<MovieSearch movies={mockMovies} userId={userId} />)
+      render(<MovieSearch movies={mockMovies} />)
       const searchInput = screen.getByPlaceholderText(/search movies by title, director, or genre/i)
       
       expect(searchInput).toHaveAttribute('type', 'text')
@@ -377,7 +374,7 @@ describe('MovieSearch Component', () => {
     })
 
     it('should maintain focus on search input after typing', () => {
-      render(<MovieSearch movies={mockMovies} userId={userId} />)
+      render(<MovieSearch movies={mockMovies} />)
       const searchInput = screen.getByPlaceholderText(/search movies by title, director, or genre/i)
       
       searchInput.focus()

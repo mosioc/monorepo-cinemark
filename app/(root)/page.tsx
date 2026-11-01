@@ -1,7 +1,7 @@
 import { db } from "@/database/drizzle";
-import { movies } from "@/database/schema";
+import { movies, purchases } from "@/database/schema";
 import { auth } from "@/auth";
-import { desc } from "drizzle-orm";
+import { and, desc, eq } from "drizzle-orm";
 import MovieSearch from "@/components/MovieSearch";
 
 const Home = async () => {
@@ -11,8 +11,23 @@ const Home = async () => {
     .from(movies)
     .orderBy(desc(movies.createdAt));
 
+  const userId = session?.user?.id;
+  const ownedMovieIds = userId
+    ? await db
+        .select({ movieId: purchases.movieId })
+        .from(purchases)
+        .where(
+          and(
+            eq(purchases.userId, userId),
+            eq(purchases.purchaseStatus, "COMPLETED")
+          )
+        )
+    : [];
+  const ownedIds = new Set(ownedMovieIds.map(({ movieId }) => movieId));
+
   const latestMovies: Movie[] = latestMoviesRaw.map((movie) => ({
     ...movie,
+    isPurchased: ownedIds.has(movie.id),
   }));
 
   if (latestMovies.length === 0) {
@@ -27,10 +42,7 @@ const Home = async () => {
   }
 
   return (
-    <MovieSearch
-      movies={latestMovies}
-      userId={session?.user?.id as string}
-    />
+    <MovieSearch movies={latestMovies} />
   );
 };
 

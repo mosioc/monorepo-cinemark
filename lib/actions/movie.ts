@@ -2,15 +2,25 @@
 
 import { db } from "@/database/drizzle";
 import { movies, purchases } from "@/database/schema";
-import { eq, and } from "drizzle-orm";
+import { eq } from "drizzle-orm";
+import { auth } from "@/auth";
+import { z } from "zod";
 
-interface PurchaseMovieParams {
-  userId: string;
-  movieId: string;
-}
+const DUPLICATE_PURCHASE_ERROR =
+  "You have already added this movie to your library";
 
-export const purchaseMovie = async (params: PurchaseMovieParams) => {
-  const { userId, movieId } = params;
+export const purchaseMovie = async (movieId: string) => {
+  const parsedMovieId = z.string().uuid().safeParse(movieId);
+  if (!parsedMovieId.success) {
+    return { success: false, error: "Invalid movie" };
+  }
+
+  const session = await auth();
+  const userId = session?.user?.id;
+
+  if (!userId) {
+    return { success: false, error: "You must be signed in to add movies" };
+  }
 
   try {
     const movie = await db
@@ -26,30 +36,27 @@ export const purchaseMovie = async (params: PurchaseMovieParams) => {
       };
     }
 
-    const existingPurchase = await db
-      .select()
-      .from(purchases)
-      .where(and(eq(purchases.userId, userId), eq(purchases.movieId, movieId)))
-      .limit(1);
+    const [record] = await db
+      .insert(purchases)
+      .values({
+        userId,
+        movieId,
+        price: "0",
+        currency: "USD",
+        purchaseStatus: "COMPLETED",
+      })
+      .onConflictDoNothing({
+        target: [purchases.userId, purchases.movieId],
+      })
+      .returning({ id: purchases.id });
 
-    if (existingPurchase.length > 0) {
-      return {
-        success: false,
-        error: "You have already added this movie to your library",
-      };
+    if (!record) {
+      return { success: false, error: DUPLICATE_PURCHASE_ERROR };
     }
-
-    const record = await db.insert(purchases).values({
-      userId,
-      movieId,
-      price: "0",
-      currency: "USD",
-      purchaseStatus: "COMPLETED",
-    });
 
     return {
       success: true,
-      data: JSON.parse(JSON.stringify(record)),
+      data: record,
     };
   } catch (error) {
     console.log(error);

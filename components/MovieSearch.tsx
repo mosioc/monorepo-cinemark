@@ -8,10 +8,9 @@ import MovieHeroClient from "@/components/MovieHeroClient";
 
 interface Props {
   movies: Movie[];
-  userId: string;
 }
 
-const MovieSearch = ({ movies, userId }: Props) => {
+const MovieSearch = ({ movies }: Props) => {
   const [searchQuery, setSearchQuery] = useState("");
 
   const filteredMovies = useMemo(() => {
@@ -31,7 +30,8 @@ const MovieSearch = ({ movies, userId }: Props) => {
   const hasResults = filteredMovies.length > 0;
   const heroMovie = hasResults ? filteredMovies[0] : null;
   const otherMovies = hasResults ? filteredMovies.slice(1) : [];
-  const listTitle = searchQuery ? "Search Results" : "Latest Movies";
+  const hasSearchQuery = searchQuery.trim().length > 0;
+  const listTitle = hasSearchQuery ? "Search Results" : "Latest Movies";
 
   return (
     <>
@@ -65,7 +65,7 @@ const MovieSearch = ({ movies, userId }: Props) => {
       )}
 
       {/* show no results message when search returns nothing */}
-      {movies.length > 0 && searchQuery && !hasResults && (
+      {movies.length > 0 && hasSearchQuery && !hasResults && (
         <div className="flex items-center justify-center min-h-[40vh] mt-10">
           <div className="text-center">
             <h2 className="text-2xl font-bold mb-2 text-white">
@@ -83,7 +83,7 @@ const MovieSearch = ({ movies, userId }: Props) => {
         <>
           {heroMovie && (
             <div className="mt-10">
-              <MovieHeroClient {...heroMovie} userId={userId} />
+              <MovieHeroClient {...heroMovie} />
             </div>
           )}
           {otherMovies.length > 0 && (

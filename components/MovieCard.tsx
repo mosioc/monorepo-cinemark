@@ -2,8 +2,6 @@ import React from "react";
 import Link from "next/link";
 import MovieCover from "@/components/MovieCover";
 import { cn } from "@/lib/utils";
-import Image from "next/image";
-import { Button } from "@/components/ui/button";
 
 const MovieCard = ({
   id,
@@ -27,18 +25,7 @@ const MovieCard = ({
 
       {isPurchased && (
         <div className="mt-3 w-full">
-          <div className="purchased-movie">
-            <Image
-              src="/icons/calendar.svg"
-              alt="calendar"
-              width={18}
-              height={18}
-              className="object-contain"
-            />
-            <p className="text-light-100">11 days left to return</p>
-          </div>
-
-          <Button className="movie-btn">Download receipt</Button>
+          <p className="purchased-movie text-light-100">In your library</p>
         </div>
       )}
     </Link>

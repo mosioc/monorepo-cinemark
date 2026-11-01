@@ -23,9 +23,14 @@ describe('MovieCard Component', () => {
   const mockMovie: Movie = {
     id: 'movie-123',
     title: 'Test Movie',
+    director: 'Test Director',
     genre: 'Action',
+    rating: '4.0',
+    description: 'A test movie description.',
     coverColor: '#FF5733',
     coverUrl: 'https://example.com/cover.jpg',
+    summary: 'A test movie summary.',
+    createdAt: new Date(),
     isPurchased: false,
   };
 
@@ -47,15 +52,13 @@ describe('MovieCard Component', () => {
   it('should show purchased state when isPurchased is true', () => {
     render(<MovieCard {...mockMovie} isPurchased={true} />);
 
-    expect(screen.getByText('11 days left to return')).toBeInTheDocument();
-    expect(screen.getByText('Download receipt')).toBeInTheDocument();
+    expect(screen.getByText('In your library')).toBeInTheDocument();
   });
 
   it('should not show purchased elements when isPurchased is false', () => {
     render(<MovieCard {...mockMovie} isPurchased={false} />);
 
-    expect(screen.queryByText('11 days left to return')).not.toBeInTheDocument();
-    expect(screen.queryByText('Download receipt')).not.toBeInTheDocument();
+    expect(screen.queryByText('In your library')).not.toBeInTheDocument();
   });
 });
 
